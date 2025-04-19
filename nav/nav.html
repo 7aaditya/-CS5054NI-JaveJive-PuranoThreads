@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curved Navbar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Maitree:wght@200;300;400;500;600;700&family=Overlock+SC&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #DA498D;
+        }
+
+        .logo {
+            scale: 2.78;
+            padding-left: 5px;
+            padding-top: 1.5px;
+        }
+        
+        .logo img {
+            height: 40px;
+            width: auto;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0px 0px 1px rgba(255, 129, 249, 0.8));
+            transition: transform 0.5s ease, filter 0.5s ease, scale 0.5s ease;
+        }
+
+        .logo:hover img {
+            transform: rotate(-5deg);
+            filter: drop-shadow(0px 0px 6px rgb(255, 35, 244));
+            scale: 0.9;
+        }
+        
+        /* Navigation Styles */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 30px;
+            background-color: #572643;
+            color: white;
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 48px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a {
+            color: white;
+            font-family: 'Lobster Two', cursive;
+            font-weight: 600;
+            font-size: 17.6px;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease, scale 0.12s ease;
+            text-decoration: none;
+            filter: drop-shadow(0px 1.5px 2px rgba(233, 212, 212, 0.6));
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            height: 2px;
+            width: 0;
+            opacity: 70%;
+            background-color: #ea5acd;
+            transform: translateX(-50%);
+            transition: width 0.3s ease, left 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: #b0b0b0;
+            text-shadow: 0 0 10px rgba(255, 129, 249, 0.9);
+            scale: 1.1;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+            left: 50%;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            margin-right: 20px;
+        }
+
+        .nav-buttons button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          position: relative;
+          padding: 8px;
+          border-radius: 50%;
+          transition: background-color 0.3s ease;
+          display: flex; /* Enable flexbox */
+          justify-content: center; /* Center horizontally */
+          align-items: center; /* Center vertically */
+          height: 48px; /* Ensure consistent height */
+          width: 48px; /* Ensure consistent width */
+        }
+
+        .nav-buttons button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-buttons button img {
+          height: 24px;
+          width: 24px;
+          transition: transform 0.3s ease;
+          filter: drop-shadow(0px 1.5px 2px rgba(233, 212, 212, 0.6));
+          display: block;
+        }
+
+        .nav-buttons button:hover img {
+            transform: scale(1.2);
+        }
+
+        .nav-buttons button::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -40px; /* Position the tooltip below the button */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(250, 154, 202, 0.855); /* Make the background more transparent */
+            color: white;
+            padding: 5px 12px; /* Add some padding for better spacing */
+            border-radius: 20px; /* Increase the border radius for a more rounded look */
+            font-size: 0.9rem; /* Slightly increase the font size */
+            font-family: 'Maitree', serif; /* Apply the imported Maitree font */
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .nav-buttons button:hover::after {
+            opacity: 1;
+        }
+
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="images/SiteLogo.png" alt="Logo">
+        </div>
+        
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Shop</a>
+            <a href="#">About Us</a>
+            <a href="#">FAQs</a>
+        </div>
+        
+        <div class="nav-buttons">
+          <a href="UserLoginPage.html">
+              <button data-tooltip="My Account">
+                  <img src="images/accounticon.png" alt="Search">
+              </button>
+          </a>
+          <a href="MyFavouritesPage.html">
+              <button data-tooltip="My Favourites">
+                  <img src="images/wishlisticon.png" alt="User">
+              </button>
+          </a>
+          <a href="ShoppingCartPage.html">
+              <button data-tooltip="Shopping Cart">
+                  <img src="images/carticon.png" alt="Cart">
+              </button>
+          </a>
+      </div>
+    </nav>
+</body>
+</html>
