@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@100..800&family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Maitree:wght@200;300;400;500;600;700&family=Overlock+SC&family=Playfair+Display:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #DA498D; 
+            background: #DA498D url('images/WavyBackground.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .logo {
+            scale: 2.78;
+            padding-left: 5px;
+            padding-top: 1.5px;
+        }
+        
+        .logo img {
+            height: 40px;
+            width: auto;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0px 0px 1px rgba(255, 129, 249, 0.8));
+            transition: transform 0.5s ease, filter 0.5s ease, scale 0.5s ease;
+        }
+
+        .logo:hover img {
+            transform: rotate(-5deg);
+            filter: drop-shadow(0px 0px 6px rgb(255, 35, 244));
+            scale: 0.9;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 30px;
+            background-color: #572643;
+            color: white;
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 48px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a {
+            color: white;
+            font-family: 'Lobster Two', cursive;
+            font-weight: 600;
+            font-size: 17.6px;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease, scale 0.12s ease;
+            text-decoration: none;
+            filter: drop-shadow(0px 1.5px 2px rgba(233, 212, 212, 0.6));
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            height: 2px;
+            width: 0;
+            opacity: 70%;
+            background-color: #ea5acd;
+            transform: translateX(-50%);
+            transition: width 0.3s ease, left 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: #b0b0b0;
+            text-shadow: 0 0 10px rgba(255, 129, 249, 0.9);
+            scale: 1.1;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+            left: 50%;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            margin-right: 20px;
+        }
+
+        .nav-buttons button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          position: relative;
+          padding: 8px;
+          border-radius: 50%;
+          transition: background-color 0.3s ease;
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          height: 48px; 
+          width: 48px; 
+        }
+
+        .nav-buttons button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-buttons button img {
+          height: 24px;
+          width: 24px;
+          transition: transform 0.3s ease;
+          filter: drop-shadow(0px 1.5px 2px rgba(233, 212, 212, 0.6));
+          display: block;
+        }
+
+        .nav-buttons button:hover img {
+            transform: scale(1.2);
+        }
+
+        .nav-buttons button::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -40px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(250, 154, 202, 0.855); 
+            color: white;
+            padding: 5px 12px; 
+            border-radius: 20px; 
+            font-size: 0.9rem; 
+            font-family: 'Maitree', serif; 
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .nav-buttons button:hover::after {
+            opacity: 1;
+        }
+
+        .nav-links a.active {
+            position: relative;
+            color: #ffcc00; 
+            transition: text-shadow 0.2s ease, scale 0.12s ease;
+        }
+
+        .nav-links a.active::after {
+          content: '';
+          position: absolute;
+          bottom: 32px; 
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent; 
+          border-right: 8px solid transparent; 
+          border-top: 8px solid #ffcc00; 
+          transform: translateX(-50%);
+          background: none;
+        }
+
+        .nav-buttons button.active {
+          background-color: rgba(255, 204, 0, 0.2); 
+          border: 2px solid #ffcc00; 
+          transform: scale(1.1); 
+          transition: all 0.3s ease; 
+        }
+
+        nav-buttons button.active img {
+          filter: drop-shadow(0px 0px 6px #ffcc00); 
+        }
+
+        .cart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 610px; /* Fixed height */
+    margin: auto;
+    margin-top: 25px;
+    padding: 30px;
+    padding-bottom: 145px;
+    background-color: rgba(228, 143, 173, 0.8); /* Adds a semi-transparent background color */
+    background-image: url('images/LayeredWaves.png'); /* Adds the background image */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover; /* Ensures the image covers the container */
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box; /* Includes padding in height */
+    border-radius: 40px;
+}
+
+        .cart-title {
+            font-family: 'Lobster Two', cursive;
+            font-size: 42px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .cart-title + hr {
+            width: 100%;
+            border: none;
+            border-top: 2px solid #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .cart-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 1px; /* Further reduced the gap between panels */
+    width: 100%;
+    height: 100%; /* Ensures it respects the height of .cart-container */
+    box-sizing: border-box;
+}
+
+.cart-left {
+    width: 68%; /* Slightly increased width to reduce the gap */
+    opacity: 82%;
+    background-color: #ffffff;
+    border-radius: 50px 12px 12px 50px; /* Adjusted border-radius */
+    padding: 20px;
+    margin-top: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Fixed height */
+    overflow-y: auto; /* Enables scrolling */
+    box-sizing: border-box; /* Includes padding in height */
+}
+
+.cart-right {
+    width: 27%; /* Slightly reduced width to reduce the gap */
+    opacity: 82%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 12px;
+    height: 100%; /* Fixed height */
+}
+
+.cart-left .scrollable-content {
+    overflow-y: auto; /* Enables scrolling */
+    height: 100%; /* Ensures it fills the remaining height */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #dc77a6 #f5c6e0; /* Scrollbar thumb and track colors for Firefox */
+}
+
+.cart-left .scrollable-content::-webkit-scrollbar {
+  width: 8px; /* Scrollbar width */
+    margin-left: 4px; /* Moves the scrollbar slightly to the right */
+}
+
+.cart-left .scrollable-content::-webkit-scrollbar-track {
+    background: #f5c6e0; /* Scrollbar track color */
+    border-radius: 10px;
+}
+
+.cart-left .scrollable-content::-webkit-scrollbar-thumb {
+    background-color: #da498d; /* Scrollbar thumb color */
+    border-radius: 10px;
+    border: 2px solid #f5c6e0; /* Adds padding around the thumb */
+}
+
+.cart-left .scrollable-content::-webkit-scrollbar-button {
+    display: none; /* Removes up and down arrows */
+}
+
+.image-box {
+    width: 50px;
+    height: 50px;
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden; /* Ensures the image stays within the box */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image fits the box while maintaining aspect ratio */
+    display: block;
+}
+
+        .cart-left .data-header {
+            display: grid;
+            grid-template-columns: 3.05fr 1fr 1fr 1fr;
+            text-align: center;
+            font-weight: bold;
+            color: #572643;
+            margin-bottom: 10px;
+            transform: translateX(-10px);
+        }
+
+        .cart-left .data-header + hr {
+            width: 100%;
+            border: none;
+            border-top: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .cart-left .cart-item {
+            display: grid;
+            grid-template-columns: 3fr 1fr 1fr 1fr;
+            text-align: center;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .cart-left .product-column {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-left .remove-btn {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, color 0.2s ease, rotate 0.2s ease;
+        }
+
+        .cart-left .remove-btn:hover {
+    transform: scale(1.1); /* Slightly enlarges the button */
+    rotate: -15deg; /* Rotates the button on hover */
+    color: #933e3e; /* Lightens the color on hover */
+}
+
+        .cart-left .image-box {
+            width: 50px;
+            height: 50px;
+            background-color: #ddd;
+            border-radius: 5px;
+        }
+
+        .cart-left .product-name {
+    font-size: 14px;
+    color: #333;
+    margin-left: 4px; /* Moves the item names 4px to the right */
+}
+
+        .cart-left .price,
+        .cart-left .discount,
+        .cart-left .subtotal {
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-right {
+          opacity: 82%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 12px;
+    height: 100%; /* Fixed height */
+}
+
+.summary-container,
+.payment-container {
+    background-color: #ffffff;
+    border-radius: 12px 50px 50px 12px; /* Adjusted border-radius */
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: 48%; /* Fixed height */
+    box-sizing: border-box; /* Includes padding in height */
+    overflow: hidden; /* Prevents overflow */
+}
+
+.summary-container {
+  padding-bottom: 23px; }
+
+  .payment-container {
+    padding-bottom: -17px; }
+
+.summary-container h2 + hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #ddd; /* Matches the style of the line under the product title */
+    margin-bottom: 15px; /* Adds spacing below the line */
+}
+
+.summary-container h2 {
+  font-family: 'Lobster Two', cursive;
+    font-size: 24px; /* Matches the size of "Choose Payment Method" */
+    color: #572643;
+    margin-bottom: 15px;
+}
+
+        .payment-container h2 {
+            font-family: 'Lobster Two', cursive;
+            font-size: 20px;
+            color: #572643;
+            margin-bottom: 15px;
+        }
+
+        .payment-container h2 + hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #ddd; /* Matches the style of the line under the product title */
+    margin-bottom: 15px; /* Adds spacing below the line */
+}
+
+        .summary-container span {
+            display: block;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .summary-container .total {
+          font-family: 'Calibri', sans-serif; /* Keeps the font as Calibri */
+    font-size: 13px; /* Keeps the reduced font size */
+    font-weight: bold; /* Keeps the text bold */
+    color: #28a745; /* Green color for the price */
+    text-align: right; /* Aligns the text to the right */
+    display: block; /* Ensures it behaves like a block element */
+    margin-top: 4px; /* Moves the total up by 6px */
+    margin-right: 23px; /* Keeps the alignment consistent */
+}
+        
+        /* Delivery Form Styling */
+.delivery-form {
+    margin: 15px 0; /* Adjusted margin for spacing */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: auto; /* Adjusts the width to fit the content */
+}
+
+.delivery-form input {
+    padding: 5px 10px; /* Adjusted padding for a compact look */
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 14px; /* Matches the font size */
+    outline: none;
+    transition: border-color 0.3s ease;
+    max-width: 250px; /* Limits the width to match the layout */
+    align-self: flex-start; /* Aligns the input field to the left */
+}
+
+.delivery-form input:focus {
+    border-color: #8a3b8f;
+}
+
+.delivery-charge-divider {
+  width: 100%; /* Makes the line span the full width */
+    border: none;
+    border-top: 1px solid #ddd; /* Matches the style of other line divisions */
+    margin: 5px 0; /* Reduced margin to move the total up */
+}
+
+/* Confirmation Tick Styling */
+.confirmation-tick {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: #28a745; /* Green color for confirmation */
+    font-weight: bold;
+    display: none; /* Initially hidden */
+}
+
+/* Show confirmation tick when form is filled */
+.delivery-form input:valid + .confirmation-tick {
+    display: block;
+}
+
+        .payment-options {
+    display: flex; /* Aligns the buttons horizontally */
+    justify-content: center; /* Centers the buttons horizontally */
+    align-items: center; /* Centers the buttons vertically */
+    margin-bottom: 20px;
+    gap: 25px; /* Reduces the gap between buttons */
+}
+
+.payment-options button {
+    width: 40px; /* Size for the payment method boxes */
+    height: 40px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.4s ease, rotate 0.5s ease; /* Added transition for rotation */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures the image stays within the button */
+}
+
+.payment-options button:hover {
+    background-color: #572643;
+    border: 2px dotted #8a3b8f; /* Adds a dotted border on hover */
+    transform: scale(1.2); /* Slightly enlarges the button on hover */
+    rotate: 359.9deg; /* Rotates the button on hover */
+}
+
+.payment-options button.selected {
+    border: 3px solid #8a3b8f; /* Highlighted border */
+    transform: scale(1.4); /* Scales up the selected button */
+    transition: transform 0.3s ease, border 0.3s ease; /* Smooth transition */
+}
+
+.payment-options .image-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures the image stays within the box */
+}
+
+.payment-options .image-box img {
+    width: 80%; /* Makes the images smaller inside the buttons */
+    height: 80%;
+    object-fit: contain; /* Ensures the image fits without cropping */
+    display: block;
+}
+
+.payment-container .proceed-btn {
+    position: relative;
+    display: block;
+    width: 30%;
+    margin: 20px auto;
+    padding: 10px 15px;
+    font-family: 'Anek Malayalam', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #622d60d9;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    text-align: center;
+    overflow: hidden; 
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.payment-container .proceed-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.5); 
+    border-radius: 25px; 
+    transform: translate(-50%, -50%);
+    transition: width 0.35s ease, height 0.35s ease;
+    z-index: 0; 
+}
+
+.payment-container .proceed-btn:hover::before {
+    width: 88%; 
+    height: 88%; 
+}
+
+.payment-container .proceed-btn:hover {
+    background-color: #8a3b8f;
+    transform: scale(1.05);
+}
+
+.payment-container .proceed-btn span {
+    position: relative;
+    z-index: 1; 
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.payment-container .proceed-btn:hover::after {
+    opacity: 1; 
+    right: 48px; 
+}
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="images/SiteLogo.png" alt="Logo">
+        </div>
+        
+        <div class="nav-links">
+            <a href="HomePage.html">Home</a>
+            <a href="ShopPage.html">Shop</a>
+            <a href="AboutUsPage.html">About Us</a>
+            <a href="FAQsPage.html">FAQs</a>
+        </div>
+        
+        <div class="nav-buttons">
+            <a href="UserLoginPage.html">
+                <button data-tooltip="My Account">
+                    <img src="images/accounticon.png" alt="Search">
+                </button>
+            </a>
+            <a href="MyFavouritesPage.html">
+                <button data-tooltip="My Favourites">
+                    <img src="images/wishlisticon.png" alt="User">
+                </button>
+            </a>
+            <a href="ShoppingCartPage.html">
+                <button data-tooltip="Shopping Cart" class="active">
+                    <img src="images/carticon.png" alt="Cart">
+                </button>
+            </a>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+      <h1 class="cart-title">Shopping Cart</h1>
+      <hr>
+      <div class="cart-content">
+        <div class="cart-left">
+          <div class="data-header">
+              <span>Product Name</span>
+              <span>Price</span>
+              <span>Discount</span>
+              <span>Subtotal</span>
+          </div>
+          <hr>
+          <div class="scrollable-content">
+            <div class="cart-item">
+              <div class="product-column">
+                  <button class="remove-btn">x</button>
+                  <div class="image-box">
+                      <img src="images/G121Pants.png" alt="img">
+                  </div>
+                  <span class="product-name">G121 Side Pocket Washed Baggy Jeans</span>
+              </div>
+              <span class="price">Rs. 2,499.00</span>
+              <span class="discount">-12%</span>
+              <span class="subtotal">Rs. 2,199.12</span>
+          </div>
+          <div class="cart-item">
+              <div class="product-column">
+                  <button class="remove-btn">x</button>
+                  <div class="image-box">
+                      <img src="images/AsicsGelQuantum.png" alt="img">
+                  </div>
+                  <span class="product-name">Asics Gel Quantum Kinetic "Shamrock Green"</span>
+              </div>
+              <span class="price">Rs. 5,799.00</span>
+              <span class="discount">-15%</span>
+              <span class="subtotal">Rs. 4,929.15</span>
+          </div>
+          <div class="cart-item">
+              <div class="product-column">
+                  <button class="remove-btn">x</button>
+                  <div class="image-box">
+                      <img src="images/PinkSnowflakeRippedBunnyEarsCap.png" alt="img">
+                  </div>
+                  <span class="product-name">Pink Snowflake Ripped Bunny Ears Cap</span>
+              </div>
+              <span class="price">Rs. 1,550.00</span>
+              <span class="discount">x</span>
+              <span class="subtotal">Rs. 1,550.00</span>
+          </div>
+          <div class="cart-item">
+              <div class="product-column">
+                  <button class="remove-btn">x</button>
+                  <div class="image-box">
+                      <img src="images/GothicPunkBearHat.png" alt="img">
+                  </div>
+                  <span class="product-name">Gothic Punk Bear Hat Black/Brown</span>
+              </div>
+              <span class="price">Rs. 1,775.00</span>
+              <span class="discount">-12%</span>
+              <span class="subtotal">Rs. 1,562.00</span>
+          </div>
+          <div class="cart-item">
+              <div class="product-column">
+                  <button class="remove-btn">x</button>
+                  <div class="image-box">
+                      <img src="images/CorduroyLiningOverSizedFullShirt.png" alt="img">
+                  </div>
+                  <span class="product-name">Corduroy Lining Over Sized Full Shirt " Black "</span>
+              </div>
+              <span class="price">Rs. 1,275.00</span>
+              <span class="discount">-10%</span>
+              <span class="subtotal">Rs. 1,147.50</span>
+          </div>
+          <div class="cart-item">
+              <div class="product-column">
+                  <button class="remove-btn">x</button>
+                  <div class="image-box">
+                      <img src="images/OverwashedRippedJeansCrossbag.png" alt="img">
+                  </div>
+                  <span class="product-name">Overwashed Ripped Jeans Crossbag</span>
+              </div>
+              <span class="price">Rs. 3,299.00</span>
+              <span class="discount">-8%</span>
+              <span class="subtotal">Rs. 3,035.08</span>
+          </div>
+          </div>
+      </div>
+
+          <div class="cart-right">
+            <div class="summary-container">
+              <h2>Order Summary</h2>
+              <hr> <!-- Line division added here -->
+              <span><b>Subtotal</b>: Rs. 16,898.00</span>
+              <form class="delivery-form">
+                <input type="text" id="delivery-location" placeholder="Enter Delivery Location">
+            </form>
+              <span><b>Delivery Charge</b>: Rs. 100</span>
+              <hr class="delivery-charge-divider"> <!-- Line division added here -->
+<span class="total">Total: Rs. 14,887.15</span>
+              <div class="confirmation-tick">✔</div> <!-- Confirmation tick -->
+          </div>
+              <div class="payment-container">
+                <h2>Choose Payment Method</h2>
+                <hr> <!-- Line division added here -->
+                <div class="payment-options">
+                  <button data-method="esewa">
+                      <div class="image-box">
+                          <img src="images/EsewaLogo.png" alt="Esewa">
+                      </div>
+                  </button>
+                  <button data-method="khalti">
+                      <div class="image-box">
+                          <img src="images/KhaltiLogo.png" alt="Khalti">
+                      </div>
+                  </button>
+                  <button data-method="cod">
+                      <div class="image-box">
+                          <img src="images/CODLogo.png" alt="Cash on Delivery">
+                      </div>
+                  </button>
+              </div>
+                <button class="proceed-btn">Proceed</button>
+            </div>
+          </div>
+      </div>
+  </div>
+
+  <script>
+    const paymentButtons = document.querySelectorAll('.payment-options button');
+
+    paymentButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Check if the clicked button is already selected
+            if (button.classList.contains('selected')) {
+                button.classList.remove('selected'); // Unselect the button
+            } else {
+                // Remove the 'selected' class from all buttons
+                paymentButtons.forEach(btn => btn.classList.remove('selected'));
+
+                // Add the 'selected' class to the clicked button
+                button.classList.add('selected');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
