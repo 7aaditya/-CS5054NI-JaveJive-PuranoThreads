@@ -1,0 +1,435 @@
+@charset "UTF-8";
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@100..800&family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Maitree:wght@200;300;400;500;600;700&family=Overlock+SC&family=Playfair+Display:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #DA498D;
+            background: #DA498D url('images/WavyBackground.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .logo {
+            scale: 2.78;
+            padding-left: 5px;
+            padding-top: 1.5px;
+        }
+        
+        .logo img {
+            height: 40px;
+            width: auto;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0px 0px 1px rgba(255, 129, 249, 0.8));
+            transition: transform 0.5s ease, filter 0.5s ease, scale 0.5s ease;
+        }
+
+        .logo:hover img {
+            transform: rotate(-5deg);
+            filter: drop-shadow(0px 0px 6px rgb(255, 35, 244));
+            scale: 0.9;
+        }
+        
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 30px;
+            background-color: #572643;
+            color: white;
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 48px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a {
+            color: white;
+            font-family: 'Lobster Two', cursive;
+            font-weight: 600;
+            font-size: 17.6px;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s ease, scale 0.12s ease;
+            text-decoration: none;
+            filter: drop-shadow(0px 1.5px 2px rgba(233, 212, 212, 0.6));
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            height: 2px;
+            width: 0;
+            opacity: 70%;
+            background-color: #ea5acd;
+            transform: translateX(-50%);
+            transition: width 0.3s ease, left 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: #b0b0b0;
+            text-shadow: 0 0 10px rgba(255, 129, 249, 0.9);
+            scale: 1.1;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+            left: 50%;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            margin-right: 20px;
+        }
+
+        .nav-buttons button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          position: relative;
+          padding: 8px;
+          border-radius: 50%;
+          transition: background-color 0.3s ease;
+          display: flex;
+          justify-content: center; 
+          align-items: center;
+          height: 48px; 
+          width: 48px; 
+        }
+
+        .nav-buttons button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-buttons button img {
+          height: 24px;
+          width: 24px;
+          transition: transform 0.3s ease;
+          filter: drop-shadow(0px 1.5px 2px rgba(233, 212, 212, 0.6));
+          display: block;
+        }
+
+        .nav-buttons button:hover img {
+            transform: scale(1.2);
+        }
+
+        .nav-buttons button::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -40px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(250, 154, 202, 0.855); 
+            color: white;
+            padding: 5px 12px; 
+            border-radius: 20px; 
+            font-size: 0.9rem; 
+            font-family: 'Maitree', serif; 
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .nav-buttons button:hover::after {
+            opacity: 1;
+        }
+
+        .nav-links a.active {
+            position: relative;
+            color: #ffcc00; 
+            transition: text-shadow 0.2s ease, scale 0.12s ease;
+            
+        }
+
+        .nav-links a.active::after {
+          content: '';
+          position: absolute;
+          bottom: 32px; 
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent; 
+          border-right: 8px solid transparent; 
+          border-top: 8px solid #ffcc00; 
+          transform: translateX(-50%);
+          background: none;
+        }
+
+        .nav-buttons button.active {
+          background-color: rgba(255, 204, 0, 0.2); 
+          border: 2px solid #ffcc00; 
+          transform: scale(1.1); 
+          transition: all 0.3s ease; 
+        }
+
+        nav-buttons button.active img {
+          filter: drop-shadow(0px 0px 6px #ffcc00); 
+        }
+       
+        .login-container {
+            background: url('images/LayeredWaves.png') no-repeat center center;
+            background-size: cover;
+            opacity: 78%;
+            background-color: #ffffff;
+            width: 780px;
+            height: 490px;
+            padding: 46px 35px 35px;
+            border-radius: 20px 20px 50px 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-container form {
+            margin-top: 30px; 
+        }
+
+        .login-container h1 {
+            font-family: 'Lobster Two', cursive;
+            font-size: 36px;
+            font-weight: 800;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            color: #555555;
+        }
+
+        .input-field {
+            display: block;
+            width: 60%; 
+            margin: 10px auto;
+            padding: 10px 15px;
+            font-family: 'Anek Malayalam', sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            color: #555555;
+            border: 2px solid #ccc;
+            border-radius: 25px;
+            background-color: transparent;
+            text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .password-container {
+            position: relative;
+            width: 60%;
+            margin: 10px auto;
+        }
+
+        .password-container .input-field {
+            width: 100%;
+            padding-right: 40px;
+        }
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    margin: 22px auto 0 auto; /* Increased top margin for more space below password */
+    font-family: 'Anek Malayalam', sans-serif;
+    font-size: 15.5px;
+    font-weight: 400;
+    color: #622d60d9;
+    letter-spacing: 0.2px;
+    user-select: none;
+}
+
+.remember-me label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.custom-checkbox {
+    appearance: none;
+    width: 16px;         /* Smaller checkbox */
+    height: 16px;
+    border: 2px solid #ea5acd;
+    border-radius: 5px;
+    background: #fff;
+    transition: border-color 0.2s;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    box-shadow: none;    /* Remove shadow */
+}
+
+.custom-checkbox:checked {
+    border-color: #e47ce7d9;
+    background-color: #ca55ad;
+}
+
+.custom-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;           /* Adjusted for smaller box */
+    top: 2px;
+    width: 4px;          /* Smaller tick */
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+.custom-checkbox:focus {
+    box-shadow: 0 0 0 1.5px #ea5acd55; /* Subtle focus */
+}
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 20px; 
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #9b8b99;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .toggle-password:hover {
+            color: #ccb9cd;
+        }
+
+        .toggle-password:active {
+            transform: translateY(-50%) scale(0.8); 
+            color: #555555; 
+        }
+
+        .input-field:focus {
+            border-color: #622d60d9;
+            box-shadow: 0 0 5px rgba(98, 45, 96, 0.5);
+            outline: none;
+        }
+
+        .continue-button {
+            position: relative;
+            display: block;
+            width: 30%;
+            margin: 20px auto;
+            padding: 10px 15px;
+            font-family: 'Anek Malayalam', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #622d60d9;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            text-align: center;
+            overflow: hidden; 
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .continue-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: rgba(255, 255, 255, 0.5); 
+            border-radius: 25px; 
+            transform: translate(-50%, -50%);
+            transition: width 0.35s ease, height 0.35s ease;
+            z-index: 0; 
+        }
+
+        .continue-button:hover::before {
+            width: 95%; 
+            height: 85%; 
+        }
+
+        .continue-button:hover {
+            background-color: #8a3b8f;
+            transform: scale(1.05);
+        }
+
+        .continue-button span {
+            position: relative;
+            z-index: 1; 
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .continue-button::after {
+            content: '→';
+            position: absolute;
+            right: -30px; 
+            top: 49%;
+            transform: translateY(-50%);
+            opacity: 0;
+            font-size: 24px; 
+            font-weight: bold;
+            color: #ffffff;
+            transition: opacity 0.3s ease, right 0.3s ease; 
+        }
+
+        .continue-button:hover span {
+            transform: translateX(-15px); 
+        }
+
+        .continue-button:hover::after {
+            opacity: 1; 
+            right: 48px; 
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; 
+            margin-top: 20px;
+        }
+
+        .vertical-line {
+            width: 1px; 
+            height: 20px; 
+            background-color: #847b83; 
+            opacity: 0.7; 
+        }
+
+        .sign-up-link,
+        .forgot-password-link {
+            display: inline-block;
+            font-family: 'Anek Malayalam', sans-serif;
+            font-size: 14px;
+            font-weight: 300;
+            color: #622d60d9;
+            text-decoration: none;
+            margin: 5px 0;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .sign-up-link:hover,
+        .forgot-password-link:hover {
+            color: #c154c9; 
+            transform: scale(0.95); 
+        }
+
+
+    </style>
